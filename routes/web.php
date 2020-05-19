@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 //public
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'UserController@index')->name('profile');
 Route::get('/kapcsolat', 'HomeController@contact')->name('contact');
 
