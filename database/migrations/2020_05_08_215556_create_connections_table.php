@@ -17,6 +17,7 @@ class CreateConnectionsTable extends Migration
             $table->id();
             $table->integer('student');
             $table->integer('subject');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

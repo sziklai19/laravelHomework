@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Connection;
 use App\Subject;
 use App\User;
 use Illuminate\Http\Request;
@@ -43,6 +44,8 @@ class SubjectController extends Controller
     public function delete(Request $request, $id)
     {
         Subject::destroy($id);
+
+        Connection::where('subject', $id)->delete();
 
         return redirect('teacher');
     }

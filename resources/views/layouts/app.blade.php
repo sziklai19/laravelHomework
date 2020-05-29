@@ -158,7 +158,7 @@
             @auth
             <div class="row">
                 <div class="col s2">
-                    <div class="collection with-header hide-on-med-and-down">
+                    <div class="collection card with-header hide-on-med-and-down" style="position: sticky; top: 0;">
                         <h5 class="collection-header">Menü</h5>
                         @if (Auth::user()->teacher)
                         <a class="collection-item light-blue-text {{url()->current()==route('teacher') ? 'active' : ''}}"
