@@ -47,6 +47,7 @@
     </div>
     @if (Auth::user()->teacher)
     <div class="card-action">
+        <a href="{{route('modify-subject', $subject->id)}}" class="light-blue-text">Új feladat</a>
         <a href="{{route('modify-subject', $subject->id)}}" class="light-blue-text">Módosítás</a>
         <a href="#" class="red-text" onclick="
             event.preventDefault();
@@ -58,6 +59,27 @@
     </div>
     @endif
 </div>
+@if (Auth::user()->teacher)
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Feladatok{{Auth::user()->id}}</span>
+            <table>
+                <tr>
+                    <th>Név</th>
+                    <th>Leírás</th>
+                    <th></th>
+                </tr>
+                @foreach ($assignments as $assignment)
+                <tr>
+                    <td>{{$assignment->name}}</td>
+                    <td>{{$assignment->desc}}</td>
+                    <td><a href="#" class="btn orange btn-small waves-effect">Gomb</a></td>
+                </tr>
+                @endforeach
+            </table>
+        </div>
+    </div>
+@endif
 <div class="card">
     <div class="card-content">
         <span class="card-title">Jelentkezett tanulók</span>

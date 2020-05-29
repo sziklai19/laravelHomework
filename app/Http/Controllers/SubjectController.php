@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Assignment;
 use App\Connection;
 use App\Subject;
 use App\User;
@@ -32,13 +33,18 @@ class SubjectController extends Controller
     public function details($id)
     {
         $subject = Subject::find($id);
-        $students = DB::table('connections')->join('users', 'users.id', '=', 'connections.student')->where('connections.subject', $id)->select('users.name', 'users.email')->get();
+        $students = Connection::join('users', 'users.id', '=', 'connections.student')
+            ->where('connections.subject', $id)
+            ->select('users.name', 'users.email')
+            ->get();
+        $assignments = Assignment::where('subject', $id)->get();
         $teacher = User::find($subject->teacher);
 
         return view('subject-details')
             ->with('subject', $subject)
             ->with('students', $students)
-            ->with('teacher', $teacher);
+            ->with('teacher', $teacher)
+            ->with('assignments', $assignments);
     }
 
     public function delete(Request $request, $id)

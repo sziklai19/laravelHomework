@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Connection;
+use App\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,11 +19,10 @@ class StudentController extends Controller
     public function index()
     {
         $ids = [];
-        foreach(DB::table('connections')->where('connections.student', Auth::id())->get('connections.subject') as $item){
+        foreach(Connection::where('connections.student', Auth::id())->get('connections.subject') as $item){
             array_push($ids, $item->subject);
         }
-        $subjects = DB::table('subjects')
-            ->join('users', 'users.id', '=', 'subjects.teacher')
+        $subjects = Subject::join('users', 'users.id', '=', 'subjects.teacher')
             ->whereIn('subjects.id', $ids)
             ->select('subjects.id', 'subjects.name', 'subjects.code', 'subjects.desc', 'subjects.value', 'users.name as teacher')
             ->get();
