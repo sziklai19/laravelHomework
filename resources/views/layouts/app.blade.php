@@ -14,10 +14,15 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/6353746bc5.js" crossorigin="anonymous"></script>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
         .input-field input[type="text"]:focus+label,
         .input-field input[type="password"]:focus+label,
         .input-field input[type="email"]:focus+label,
         .input-field input[type="number"]:focus+label,
+        .input-field input[type="datetime-local"]:focus+label,
         .materialize-textarea:focus+label,
         .dropdown-content a {
             color: #03a9f4 !important;
@@ -27,6 +32,7 @@
         .input-field input[type="password"]:focus,
         .input-field input[type="email"]:focus,
         .input-field input[type="number"]:focus,
+        .input-field input[type="datetime-local"]:focus,
         .materialize-textarea:focus {
             border-color: #03a9f4 !important;
             box-shadow: 0 1px 0 0 #03a9f4 !important;
@@ -157,7 +163,7 @@
         <main>
             @auth
             <div class="row">
-                <div class="col s2">
+                <div class="col s2 l3 xl2">
                     <div class="collection card with-header hide-on-med-and-down" style="position: sticky; top: 0;">
                         <h5 class="collection-header">Menü</h5>
                         @if (Auth::user()->teacher)
@@ -175,7 +181,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="col s12 l10">
+                <div class="col s12 l9 xl10">
                     @yield('content')
                 </div>
             </div>
@@ -213,6 +219,7 @@
             var elems = document.querySelectorAll('.collapsible');
             var instances = M.Collapsible.init(elems);
         });
+        
     </script>
 </body>
 

@@ -37,7 +37,7 @@ class SubjectController extends Controller
             ->where('connections.subject', $id)
             ->select('users.name', 'users.email')
             ->get();
-        $assignments = Assignment::where('subject', $id)->get();
+        $assignments = Assignment::where('subject', $id)->orderBy('deadline_to', 'desc')->get();
         $teacher = User::find($subject->teacher);
 
         return view('subject-details')

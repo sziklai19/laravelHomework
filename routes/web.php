@@ -17,13 +17,15 @@ use Illuminate\Support\Facades\Route;
 //public
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/profile', 'UserController@index')->name('profile');
 Route::get('/kapcsolat', 'HomeController@contact')->name('contact');
+
+//user
+Route::get('/profile', 'UserController@index')->name('profile');
 
 //student
 Route::get('/student', 'StudentController@index')->name('student');
-Route::post('/student/quit/{id}', 'StudentController@quit')->name('quit-subject');
 Route::get('/student/apply', 'StudentController@apply')->name('apply-subject');
+Route::post('/student/quit/{id}', 'StudentController@quit')->name('quit-subject');
 Route::get('/student/add/{id}', 'StudentController@add')->name('add-subject');
 
 //teacher
@@ -32,10 +34,21 @@ Route::get('/teacher/add-subject', 'TeacherController@addSubject')->name('new-su
 Route::get('/teacher/modify-subject/{id}', 'TeacherController@modify')->name('modify-subject');
 
 //subject
-Route::get('/subject/{id}', 'SubjectController@details')->name('subject-details');
+Route::post('/subject/add', 'SubjectController@store')->name('store-subject');
 Route::post('/subject/{id}/modify', 'SubjectController@update')->name('update-subject');
 Route::post('/subject/{id}/publicate', 'SubjectController@publicate')->name('publicate');
 Route::post('/subject/{id}/delete', 'SubjectController@delete')->name('delete-subject');
-Route::post('/subject/add', 'SubjectController@store')->name('store-subject');
+Route::get('/subject/{id}', 'SubjectController@details')->name('subject-details');
+
+//assignment
+Route::get('/subject/{subject}/assignment/add', 'AssignmentController@add')->name('add-assignment');
+Route::post('/subject/{subject}/assignment/store', 'AssignmentController@store')->name('store-assignment');
+Route::get('/subject/{subject}/assignment/{id}', 'AssignmentController@index')->name('assignment');
+Route::get('/subject/{subject}/assignment/{id}/modify', 'AssignmentController@modify')->name('modify-assignment');
+Route::post('/subject/{subject}/assignment/{id}/update', 'AssignmentController@update')->name('update-assignment');
+
+//solution
+Route::get('/solution/{id}', 'SolutionController@index')->name('solution');
+Route::post('/solution/store', 'SolutionController@store')->name('store-solution');
 
 Auth::routes();
