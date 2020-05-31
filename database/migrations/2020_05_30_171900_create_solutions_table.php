@@ -15,10 +15,11 @@ class CreateSolutionsTable extends Migration
     {
         Schema::create('solutions', function (Blueprint $table) {
             $table->id();
-            $table->string('solution');
+            $table->multiLineString('solution')->nullable();
+            $table->string('file')->nullable();
             $table->integer('result')->nullable();
-            $table->multiLineString('comment');
-            $table->timestamp('rated_at');
+            $table->multiLineString('comment')->nullable();
+            $table->timestamp('rated_at')->nullable();
             $table->integer('student');
             $table->integer('assignment');
             $table->timestamps();

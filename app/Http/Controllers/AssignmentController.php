@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Assignment;
 use App\Solution;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssignmentController extends Controller
 {
@@ -15,7 +16,11 @@ class AssignmentController extends Controller
 
     public function index($subject, $id){
         $assignment = Assignment::find($id);
-        $solutions = Solution::where('assignment', 1)->get();
+        if(Auth::user()->teacher){
+            $solutions = Solution::where('assignment', $id)->get();
+        }else{
+            $solutions = Solution::where('assignment', 1)->where('student', Auth::id())->get();
+        }
 
         return view('assignment')
             ->with('assignment', $assignment)

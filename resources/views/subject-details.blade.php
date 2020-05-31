@@ -70,8 +70,13 @@
                     <th>Elérhető pontszám</th>
                     <th>Határidő tól</th>
                     <th>Határidő ig</th>
+                    @if (!Auth::user()->teacher)
+                        <th>Beadva</th>
+                        <th>Fájl</th>
+                    @endif
                 </tr>
                 @foreach ($assignments as $assignment)
+                @if( Auth::user()->teacher )
                 <tr class="{{$assignment->deadline_to == null ? 'green-text' : (strtotime($assignment->deadline_to) < time() ? 'red-text' : (strtotime($assignment->deadline_from) < time() ? 'orange-text' : 'green-text'))}}">
                     <td>
                         <a href="{{route('assignment', ['subject' => $subject->id, 'id' => $assignment->id])}}" class="{{$assignment->deadline_to == null ? 'green-text' : (strtotime($assignment->deadline_to) < time() ? 'red-text' : (strtotime($assignment->deadline_from) < time() ? 'orange-text' : 'green-text'))}}">
@@ -81,6 +86,28 @@
                     <td>{{$assignment->deadline_from == null ? '-' : $assignment->deadline_from}}</td>
                     <td>{{$assignment->deadline_to == null ? '-' : $assignment->deadline_to}}</td>
                 </tr>
+                @else
+                    @if(strtotime($assignment->deadline_from) <= time() && strtotime($assignment->deadline_to) > time())
+                    <tr>
+                        <td><a href="{{route('add-solution', $assignment->id)}}">{{$assignment->name}}</a></td>
+                        <td>{{$assignment->value == null ? '-' : $assignment->value.' pont'}}</td>
+                        <td>{{$assignment->deadline_from == null ? '-' : $assignment->deadline_from}}</td>
+                        <td>{{$assignment->deadline_to == null ? '-' : $assignment->deadline_to}}</td>
+                        @if (App\Solution::where('assignment', $assignment->id)->where('student', Auth::id())->count() > 0)
+                        <td>Igen</td>
+                        @if (App\Solution::where('assignment', $assignment->id)->where('student', Auth::id())->where('file', '<>', null)->count() > 0)
+                        <td>
+                            <a href="#" onclick="event.preventDefault();
+                                document.getElementById('download-{{$assignment->id}}').submit();">Letöltés</a>
+                            <form id="download-{{$assignment->id}}" method="GET" action="{{route('download-solution', App\Solution::where('assignment', $assignment->id)->where('student', Auth::id())->where('file', '<>', null)->first()->id)}}"></form>
+                        </td>
+                        @endif
+                        @else
+                        <td>Nem</td>
+                        @endif
+                    </tr>
+                    @endif
+                @endif
                 @endforeach
             </table>
         </div>

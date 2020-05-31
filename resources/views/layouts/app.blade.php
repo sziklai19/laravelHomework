@@ -137,7 +137,7 @@
                                 @else
                                 <li><a href="{{route('student')}}">Tárgyaim</a></li>
                                 <li><a href="{{route('apply-subject')}}">Tárgy felvétele</a></li>
-                                <li><a href="#">Feladatok listája</a></li>
+                                <li><a href="{{route('student-assignments')}}">Feladatok listája</a></li>
                                 @endif
                             </ul>
                         </div>
@@ -177,7 +177,8 @@
                             href="{{route('student')}}">Tárgyaim</a></li>
                         <a class="collection-item light-blue-text {{url()->current()==route('apply-subject') ? 'active' : ''}}"
                             href="{{route('apply-subject')}}">Tárgy felvétele</a></li>
-                        <a class="collection-item light-blue-text" href="#">Feladatok listája</a></li>
+                        <a class="collection-item light-blue-text {{url()->current()==route('student-assignments') ? 'active' : ''}}"
+                            href="{{route('student-assignments')}}">Feladatok listája</a></li>
                         @endif
                     </div>
                 </div>

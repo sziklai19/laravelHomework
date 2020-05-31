@@ -22,8 +22,8 @@ class LmsSeeder extends Seeder
                 'email' => 'tanar'.$i.'@gmail.com',
                 'password' => Hash::make('password'),
                 'teacher' => 1,
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now(),
+                'created_at' =>  \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ]);
         }
 
@@ -34,8 +34,8 @@ class LmsSeeder extends Seeder
                 'email' => 'diak'.$i.'@gmail.com',
                 'password' => Hash::make('password'),
                 'teacher' => 0,
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now(),
+                'created_at' =>  \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ]);
         }
 
@@ -50,8 +50,8 @@ class LmsSeeder extends Seeder
                 'value' => rand(2,8),
                 'public' => rand(0, 1),
                 'teacher' => $ids[rand(0,count($ids)-1)]->id,
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now(),
+                'created_at' =>  \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ]);
         }
 
@@ -63,8 +63,40 @@ class LmsSeeder extends Seeder
             DB::table('connections')->insert([
                 'student' => $stud[($i % (count($stud) - 1)) + 1]->id,
                 'subject' => $sub[($i % (count($sub) - 1)) + 1]->id,
-                "created_at" =>  \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now(),
+                'created_at' =>  \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ]);
+        }
+        
+        
+
+        for ($i = 1; $i <= 100; ++$i){
+            $month = rand(1, 12);
+            $day = rand(1, 30);
+            $hour = rand(0, 23);
+            $min = rand(0, 59);
+            $m = rand($month, 12);
+            $d = rand($day, 30);
+            $h = rand($hour, 23);
+            $mi = rand($min, 59);
+            
+            DB::table('assignments')->insert([
+                'name' => 'Feladat '.$i,
+                'desc' => 'Feladat '.$i.' leírása.',
+                'value' => rand(0, 100),
+                'deadline_from' => '2020-'.
+                    ($month > 9 ? $month : '0'.$month).'-'.
+                    ($day > 9 ? $day : '0'.$day).' '.
+                    ($hour > 9 ? $hour : '0'.$hour).':'.
+                    ($min > 9 ? $min : '0'.$min),
+                'deadline_to' => '2020-'.
+                    ($m > 9 ? $m : '0'.$m).'-'.
+                    ($d > 9 ? $d : '0'.$d).' '.
+                    ($h > 9 ? $h : '0'.$h).':'.
+                    ($mi > 9 ? $mi : '0'.$mi),
+                'subject' => $sub[($i % (count($sub) - 1)) + 1]->id,
+                'created_at' =>  \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ]);
         }
     }

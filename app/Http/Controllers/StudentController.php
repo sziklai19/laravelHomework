@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Assignment;
 use App\Connection;
+use App\Solution;
 use App\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +34,33 @@ class StudentController extends Controller
             ->where('users.id', '=', Auth::id())
             ->get('subjects.*', 'users.name');*/
         return view('home.student', ['student_subjects' => $subjects]);
+    }
+
+    public function assignments(){
+        $assignments = Assignment::join('connections', 'connections.subject', '=', 'assignments.subject')
+            ->where('connections.student', Auth::id())
+            ->where('assignments.deadline_from', '<=', Date('Y-m-d H:i'))
+            ->where('assignments.deadline_to', '>', Date('Y-m-d H:i'))
+            ->select('assignments.id as id',
+                'assignments.name as name',
+                'assignments.subject as subject',
+                'assignments.value as value',
+                'assignments.deadline_from as deadline_from',
+                'assignments.deadline_to as deadline_to')->get();
+        $subjects = Subject::join('connections', 'connections.subject', '=', 'subjects.id')
+            ->where('connections.student', Auth::id())
+            ->whereIn('subjects.id', (
+                Assignment::join('connections', 'connections.subject', '=', 'assignments.subject')
+                ->where('connections.student', Auth::id())
+                ->where('assignments.deadline_from', '<=', Date('Y-m-d H:i'))
+                ->where('assignments.deadline_to', '>', Date('Y-m-d H:i'))
+                ->select('assignments.subject as subject')->get()
+            ))
+            ->select('subjects.id', 'subjects.name as name')->get();
+
+        return view('student-assignments')
+            ->with('subjects', $subjects)
+            ->with('assignments', $assignments);
     }
 
     public function apply()
